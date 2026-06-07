@@ -631,6 +631,37 @@ def certificate():
         pdf_file,
         as_attachment=True
     )
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+
+    if request.method == 'POST':
+
+        email = request.form['email']
+        phone = request.form['phone']
+        new_password = request.form['new_password']
+
+        user = User.query.filter_by(
+            email=email
+        ).first()
+
+        if user and user.phone == phone:
+
+            user.password = generate_password_hash(
+                new_password
+            )
+
+            db.session.commit()
+
+            return redirect(url_for('login'))
+
+        return render_template(
+            'forgot_password.html',
+            error="Invalid Email or Phone Number"
+        )
+
+    return render_template(
+        'forgot_password.html'
+    )
 with app.app_context():
     db.create_all()
 
