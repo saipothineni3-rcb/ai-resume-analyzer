@@ -2,11 +2,22 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+   font-family:'Poppins',sans-serif;
 }
-
+:root{
+    --bg:#0f172a;
+    --card:#1e293b;
+    --primary:#3b82f6;
+    --secondary:#8b5cf6;
+    --success:#22c55e;
+    --text:#f8fafc;
+}
 body{
-    background:#081b3d;
+  background:linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
     color:white;
 }
 

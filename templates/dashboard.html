@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <title>Dashboard</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/dashboard.css') }}">
+    href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 
 <body>
@@ -12,118 +17,182 @@
 <div class="dashboard-container">
 
     <!-- Sidebar -->
-   <div class="sidebar">
+    <div class="sidebar">
 
-    <div class="logo">
+        <div class="logo">
+            <i class="fa-solid fa-file-shield"></i>
+            ResumeIQ AI
+        </div>
 
-        🤖 AI Resume
+        <ul>
+
+            <li class="active">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </li>
+
+            <li>
+                <i class="fa-solid fa-file-lines"></i>
+                Resume Analysis
+            </li>
+
+            <li>
+                <a href="/history">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    History
+                </a>
+            </li>
+
+            <li>
+                <a href="/profile">
+                    <i class="fa-solid fa-user"></i>
+                    Profile
+                </a>
+            </li>
+
+            <li>
+                <a href="/feedback">
+                    <i class="fa-solid fa-comment"></i>
+                    Feedback
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </li>
+
+        </ul>
 
     </div>
-
-    <ul>
-
-        <li class="active">
-            📊 Dashboard
-        </li>
-
-        <li>
-            📄 Resume Analysis
-        </li>
-
-        <li>
-            <a href="/history">
-                📈 History
-            </a>
-        </li>
-
-        <li>
-    <a href="/profile">
-        👤 Profile
-    </a>
-</li>
-
-        <li>
-            <a href="/logout">
-                🚪 Logout
-            </a>
-        </li>
-        <li>
-    <a href="/feedback">
-        💬 Feedback
-    </a>
-</li>
-
-    </ul>
-
-</div>
 
     <!-- Main Content -->
     <div class="main-content">
 
+        <!-- Top Navbar -->
+        <div class="top-navbar">
+
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+            </div>
+
+            <div class="nav-right">
+
+                <button class="icon-btn">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+
+                <button class="icon-btn">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        {{ username[0] }}
+                    </div>
+
+                    <span>{{ username }}</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Welcome Banner -->
         <div class="welcome-section">
 
-    <h1>Resume Intelligence Dashboard</h1>
+            <h1>
+                Welcome Back, {{ username }} 👋
+            </h1>
 
-    <p>
-        Welcome back, {{ username }}.
-        Upload your resume to evaluate ATS compatibility,
-        identify missing skills, and receive personalized
-        career recommendations.
-    </p>
+            <p>
+                Analyze resumes, improve ATS scores,
+                discover skill gaps and accelerate
+                your career growth with AI.
+            </p>
 
-</div>
-<div class="profile-card">
+        </div>
 
-    <div class="profile-avatar">
-        {{ username[0] }}
-    </div>
+        <!-- Profile Card -->
+        <div class="profile-card">
 
-    <div class="profile-info">
+            <div class="profile-avatar">
+                {{ username[0] }}
+            </div>
 
-        <h3>{{ username }}</h3>
+            <div class="profile-info">
 
-        <p>AI Resume Analyzer User</p>
+                <h3>{{ username }}</h3>
 
-    </div>
+                <p>AI Resume Analyzer User</p>
 
-</div>
-<div class="stats-container">
+            </div>
 
-    <div class="stat-card">
-        <h3>ATS Average</h3>
-        <span>{{ average_score }}%</span>
-    </div>
+        </div>
 
-    <div class="stat-card">
-        <h3>Analyses</h3>
-        <span>{{ total_analyses }}</span>
-    </div>
+        <!-- Stats Cards -->
+        <div class="stats-container">
 
-    <div class="stat-card">
-        <h3>Highest Score</h3>
-        <span>{{ highest_score }}%</span>
-    </div>
+            <div class="stat-card">
+                <h3>ATS Average</h3>
+                <span>{{ average_score }}%</span>
+            </div>
 
-</div>
-<div class="insight-card">
+            <div class="stat-card">
+                <h3>Analyses</h3>
+                <span>{{ total_analyses }}</span>
+            </div>
 
-    <h2>📈 Career Insight</h2>
+            <div class="stat-card">
+                <h3>Highest Score</h3>
+                <span>{{ highest_score }}%</span>
+            </div>
 
-    <p>
+        </div>
 
-        You have completed
-        <strong>{{ total_analyses }}</strong>
-        resume analyses.
+        <!-- Quick Actions -->
+        <div class="quick-actions">
 
-        Your highest ATS score is
-        <strong>{{ highest_score }}%</strong>.
+            <a href="/history" class="quick-card">
+                📈 View History
+            </a>
 
-        Keep improving your resume
-        to reach a 90%+ ATS score.
+            <a href="/profile" class="quick-card">
+                👤 Profile
+            </a>
 
-    </p>
+            <a href="/feedback" class="quick-card">
+                💬 Feedback
+            </a>
 
-</div>
+        </div>
+
+        <!-- Career Insight -->
+        <div class="insight-card">
+
+            <h2>📈 Career Insight</h2>
+
+            <p>
+
+                You have completed
+                <strong>{{ total_analyses }}</strong>
+                resume analyses.
+
+                Your highest ATS score is
+                <strong>{{ highest_score }}%</strong>.
+
+                Keep improving your resume
+                to reach a 90%+ ATS score.
+
+            </p>
+
+        </div>
+
+        <!-- Resume Analysis Form -->
         <form action="/analyze"
               method="POST"
               enctype="multipart/form-data">
@@ -141,55 +210,63 @@
 
             </div>
 
-            <!-- Resume Upload -->
-    <div class="card">
+            <!-- Upload Resume -->
+            <div class="card">
 
-    <h3>Upload Resume</h3>
+                <h3>Upload Resume</h3>
 
-    <label class="upload-area">
+                <label class="upload-area">
 
-        <input
-            type="file"
-            name="resume"
-            id="resume"
-            accept=".pdf"
-            required
-            onchange="showFileName()">
+                    <input
+                        type="file"
+                        name="resume"
+                        id="resume"
+                        accept=".pdf"
+                        required
+                        onchange="showFileName()">
 
-        <div class="upload-content">
+                    <div class="upload-content">
 
-            <h2>📄</h2>
+                        <h2>📄</h2>
 
-            <h4 id="upload-text">
-                Drag & Drop Resume Here
-            </h4>
+                        <h4 id="upload-text">
+                            Drag & Drop Resume Here
+                        </h4>
 
-            <p id="file-name">
-                or click to browse files
-            </p>
+                        <p id="file-name">
+                            or click to browse files
+                        </p>
 
-        </div>
+                    </div>
 
-    </label>
+                </label>
 
-</div>
+            </div>
+
             <!-- Submit Button -->
-           <button
-    type="submit"
-    class="analyze-btn">
+            <button
+                type="submit"
+                class="analyze-btn">
 
-    🚀 Analyze Resume
+                🚀 Analyze Resume
 
-</button>
-<button id="themeToggle" class="theme-btn">
-    🌙 Toggle Theme
-</button>
+            </button>
+
+            <button
+                type="button"
+                id="themeToggle"
+                class="theme-btn">
+
+                🌙 Toggle Theme
+
+            </button>
 
         </form>
 
     </div>
 
 </div>
+
 <script>
 
 function showFileName() {
@@ -212,12 +289,11 @@ function showFileName() {
 }
 
 </script>
+
 <script>
 
 const toggleBtn =
-document.getElementById(
-    "themeToggle"
-);
+document.getElementById("themeToggle");
 
 toggleBtn.addEventListener(
     "click",
@@ -237,9 +313,8 @@ toggleBtn.addEventListener(
 );
 
 if(
-    localStorage.getItem(
-        "theme"
-    ) === "true"
+    localStorage.getItem("theme")
+    === "true"
 ){
     document.body.classList.add(
         "light-theme"
@@ -247,5 +322,6 @@ if(
 }
 
 </script>
+
 </body>
 </html>

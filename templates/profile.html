@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <title>User Profile</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/profile.css') }}">
-
+    href="{{ url_for('static', filename='css/profile.css') }}">
 </head>
 
 <body>
 
 <div class="container">
+
+    <!-- Profile Header -->
 
     <div class="profile-card">
 
@@ -23,24 +27,22 @@
         </div>
 
         <h1>
-
             {{ user.name if user else 'User Not Found' }}
-
         </h1>
 
         <p>
-
+            <i class="fa-solid fa-envelope"></i>
             {{ user.email if user else '' }}
-
         </p>
 
         <p>
-
+            <i class="fa-solid fa-phone"></i>
             {{ user.phone if user else '' }}
-
         </p>
 
     </div>
+
+    <!-- Statistics -->
 
     <div class="stats">
 
@@ -60,40 +62,17 @@
 
         </div>
 
-    </div>
+        <div class="stat-box">
 
-    <div class="button-group">
+            <h2>{{ average_score }}%</h2>
 
-        <a href="/edit-profile" class="btn">
+            <p>Average ATS Score</p>
 
-            ✏️ Edit Profile
-
-        </a>
-
-        <a href="/change-password" class="btn">
-
-            🔒 Change Password
-
-        </a>
-
-        <a href="/history" class="btn">
-
-            📈 View History
-
-        </a>
-
-        <a href="/delete-account"
-           class="btn delete-btn"
-           onclick="return confirm('Are you sure you want to delete your account?')">
-
-            🗑️ Delete Account
-
-        </a>
-        <button id="themeToggle" class="theme-btn">
-    🌙 Toggle Theme
-</button>
+        </div>
 
     </div>
+
+    <!-- Candidate Ranking -->
 
     <div class="profile-summary">
 
@@ -132,19 +111,81 @@
 
     </div>
 
-    <a href="/dashboard" class="btn dashboard-btn">
+    <!-- Career Summary -->
 
-        ← Back to Dashboard
+    <div class="profile-summary">
 
-    </a>
+        <h2>📈 Career Summary</h2>
+
+        <div class="summary-card">
+
+            <p>
+
+                You have completed
+                <strong>{{ total_analyses }}</strong>
+                resume analyses.
+
+                Your highest ATS score is
+                <strong>{{ best_score }}%</strong>.
+
+                Continue improving your profile
+                to achieve a consistent ATS score
+                above 90%.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Action Buttons -->
+
+    <div class="button-group">
+
+        <a href="/edit-profile" class="btn">
+            ✏️ Edit Profile
+        </a>
+
+        <a href="/change-password" class="btn">
+            🔒 Change Password
+        </a>
+
+        <a href="/history" class="btn">
+            📈 View History
+        </a>
+
+        <a href="/dashboard" class="btn">
+            🏠 Dashboard
+        </a>
+
+        <a href="/delete-account"
+           class="btn delete-btn"
+           onclick="return confirm('Are you sure you want to delete your account?')">
+
+            🗑️ Delete Account
+
+        </a>
+
+    </div>
+
+    <!-- Theme Button -->
+
+    <div style="text-align:center;margin-top:20px;">
+
+        <button id="themeToggle" class="theme-btn">
+
+            🌙 Toggle Theme
+
+        </button>
+
+    </div>
 
 </div>
+
 <script>
 
 const toggleBtn =
-document.getElementById(
-    "themeToggle"
-);
+document.getElementById("themeToggle");
 
 toggleBtn.addEventListener(
     "click",
@@ -164,9 +205,8 @@ toggleBtn.addEventListener(
 );
 
 if(
-    localStorage.getItem(
-        "theme"
-    ) === "true"
+    localStorage.getItem("theme")
+    === "true"
 ){
     document.body.classList.add(
         "light-theme"
@@ -174,5 +214,6 @@ if(
 }
 
 </script>
+
 </body>
 </html>

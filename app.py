@@ -11,8 +11,17 @@ from models import User, Analysis, Feedback
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from flask import send_file
+from reportlab.lib import colors
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your_app_password'
+
+mail = Mail(app)
 app.secret_key = "resume_analyzer_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///resume_analyzer.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -34,6 +43,19 @@ def register():
         email = request.form['email']
         phone = request.form['phone']
 
+        # Check if email already exists
+        existing_user = User.query.filter_by(
+            email=email
+        ).first()
+
+        if existing_user:
+
+            return """
+            <h2>Email already registered!</h2>
+            <p>Please login using your existing account.</p>
+            <a href='/login'>Login Here</a>
+            """
+
         password = generate_password_hash(
             request.form['password']
         )
@@ -48,9 +70,13 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        return redirect(url_for('login'))
+        return redirect(
+            url_for('login')
+        )
 
-    return render_template('register.html')
+    return render_template(
+        'register.html'
+    )
 
 # Login Page
 @app.route('/login', methods=['GET', 'POST'])
@@ -427,6 +453,8 @@ def delete_account():
 @app.route('/download-report')
 def download_report():
 
+    from datetime import datetime
+
     pdf_file = "resume_report.pdf"
 
     doc = SimpleDocTemplate(pdf_file)
@@ -435,18 +463,29 @@ def download_report():
 
     content = []
 
+    # Title
+
     content.append(
         Paragraph(
-            "AI Resume Analyzer Report",
+            "ResumeIQ AI - Professional Resume Report",
             styles['Title']
         )
     )
 
     content.append(Spacer(1, 20))
 
+    # Candidate Information
+
     content.append(
         Paragraph(
-            f"Job Role: {session.get('job_role', 'N/A')}",
+            f"Candidate Name: {session.get('username', 'User')}",
+            styles['Heading2']
+        )
+    )
+
+    content.append(
+        Paragraph(
+            f"Target Job Role: {session.get('job_role', 'N/A')}",
             styles['Normal']
         )
     )
@@ -460,57 +499,189 @@ def download_report():
 
     content.append(Spacer(1, 15))
 
+    # Matched Skills
+
     content.append(
         Paragraph(
-            "Matched Skills:",
+            "Matched Skills",
             styles['Heading2']
         )
     )
 
-    for skill in session.get('matched_skills', []):
+    matched_skills = session.get(
+        'matched_skills',
+        []
+    )
+
+    if matched_skills:
+
+        for skill in matched_skills:
+
+            content.append(
+                Paragraph(
+                    f"✓ {skill}",
+                    styles['Normal']
+                )
+            )
+
+    else:
 
         content.append(
             Paragraph(
-                f"• {skill}",
+                "No matched skills found.",
                 styles['Normal']
             )
         )
 
-    content.append(Spacer(1, 10))
+    content.append(Spacer(1, 15))
+
+    # Missing Skills
 
     content.append(
         Paragraph(
-            "Missing Skills:",
+            "Missing Skills",
             styles['Heading2']
         )
     )
 
-    for skill in session.get('missing_skills', []):
+    missing_skills = session.get(
+        'missing_skills',
+        []
+    )
+
+    if missing_skills:
+
+        for skill in missing_skills:
+
+            content.append(
+                Paragraph(
+                    f"✗ {skill}",
+                    styles['Normal']
+                )
+            )
+
+    else:
 
         content.append(
             Paragraph(
-                f"• {skill}",
+                "No missing skills found.",
                 styles['Normal']
             )
         )
 
-    content.append(Spacer(1, 10))
+    content.append(Spacer(1, 15))
+
+    # Suggestions
 
     content.append(
         Paragraph(
-            "Suggestions:",
+            "Improvement Suggestions",
             styles['Heading2']
         )
     )
 
-    for item in session.get('suggestions', []):
+    suggestions = session.get(
+        'suggestions',
+        []
+    )
+
+    if suggestions:
+
+        for item in suggestions:
+
+            content.append(
+                Paragraph(
+                    f"• {item}",
+                    styles['Normal']
+                )
+            )
+
+    else:
 
         content.append(
             Paragraph(
-                f"• {item}",
+                "No suggestions available.",
                 styles['Normal']
             )
         )
+
+    content.append(Spacer(1, 15))
+
+    # AI Review
+
+    content.append(
+        Paragraph(
+            "AI Resume Review",
+            styles['Heading2']
+        )
+    )
+
+    content.append(
+        Paragraph(
+            session.get(
+                'review',
+                'No review available.'
+            ),
+            styles['Normal']
+        )
+    )
+
+    content.append(Spacer(1, 15))
+
+    # Candidate Rating
+
+    ats_score = session.get(
+        'ats_score',
+        0
+    )
+
+    if ats_score >= 90:
+
+        rating = "🥇 Gold Candidate"
+
+    elif ats_score >= 75:
+
+        rating = "🥈 Silver Candidate"
+
+    elif ats_score >= 60:
+
+        rating = "🥉 Bronze Candidate"
+
+    else:
+
+        rating = "📚 Beginner Candidate"
+
+    content.append(
+        Paragraph(
+            "Candidate Ranking",
+            styles['Heading2']
+        )
+    )
+
+    content.append(
+        Paragraph(
+            rating,
+            styles['Normal']
+        )
+    )
+
+    content.append(Spacer(1, 20))
+
+    # Footer
+
+    content.append(
+        Paragraph(
+            f"Generated On: {datetime.now().strftime('%d-%m-%Y %H:%M')}",
+            styles['Italic']
+        )
+    )
+
+    content.append(
+        Paragraph(
+            "Powered by ResumeIQ AI",
+            styles['Italic']
+        )
+    )
 
     doc.build(content)
 
@@ -662,6 +833,129 @@ def forgot_password():
     return render_template(
         'forgot_password.html'
     )
+@app.route('/certificate')
+def generate_certificate():
+
+    from reportlab.pdfgen import canvas
+
+    pdf_file = "certificate.pdf"
+
+    c = canvas.Canvas(pdf_file)
+
+    username = session.get(
+        "username",
+        "User"
+    )
+
+    ats_score = session.get(
+        "ats_score",
+        0
+    )
+
+    if ats_score >= 90:
+        badge = "Gold Candidate"
+
+    elif ats_score >= 75:
+        badge = "Silver Candidate"
+
+    elif ats_score >= 60:
+        badge = "Bronze Candidate"
+
+    else:
+        badge = "Beginner Candidate"
+
+    c.setFont(
+        "Helvetica-Bold",
+        28
+    )
+
+    c.drawCentredString(
+        300,
+        760,
+        "CERTIFICATE"
+    )
+
+    c.setFont(
+        "Helvetica",
+        18
+    )
+
+    c.drawCentredString(
+        300,
+        710,
+        "AI Resume Analysis Excellence"
+    )
+
+    c.drawCentredString(
+        300,
+        650,
+        "Awarded To"
+    )
+
+    c.setFont(
+        "Helvetica-Bold",
+        24
+    )
+
+    c.drawCentredString(
+        300,
+        600,
+        username
+    )
+
+    c.setFont(
+        "Helvetica",
+        18
+    )
+
+    c.drawCentredString(
+        300,
+        550,
+        f"ATS Score: {ats_score}%"
+    )
+
+    c.drawCentredString(
+        300,
+        500,
+        badge
+    )
+
+    c.drawCentredString(
+        300,
+        430,
+        "ResumeIQ AI"
+    )
+
+    c.save()
+
+    return send_file(
+        pdf_file,
+        as_attachment=True
+    )
+@app.route('/email-report')
+def email_report():
+
+    user_email = session.get('email')
+
+    msg = Message(
+        "Resume Analysis Report",
+        sender=app.config['MAIL_USERNAME'],
+        recipients=[user_email]
+    )
+
+    msg.body = """
+Hello,
+
+Your AI Resume Analysis Report
+has been generated successfully.
+
+Regards,
+ResumeIQ AI
+"""
+
+    mail.send(msg)
+
+    return "Email Sent Successfully!"
 with app.app_context():
     db.create_all()
 

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Resume Analysis Result</title>
 
     <link rel="stylesheet"
@@ -9,51 +12,110 @@
 
 <body>
 
-<div class="container">
+<body>
 
-    <h1>Resume Analysis Result</h1>
+<div class="hero-banner">
 
-    <div class="job-role-box">
+    <div class="hero-left">
 
-        <h2>
-            🎯 Target Job Role:
-            {{ job_role }}
-        </h2>
+        <h1>ResumeIQ AI</h1>
 
-    </div>
+        <p>
+            Your Resume Analysis Has Been Completed Successfully
+        </p>
 
-    <div class="score-card">
+        <div class="hero-badges">
 
-    <h2>ATS Score</h2>
+            <span class="hero-score">
+                ATS Score: {{ ats_score }}%
+            </span>
 
-    <div class="progress-circle">
+            <span class="hero-rank">
 
-        <div
-            class="circle"
-            style="
-            background:
-            conic-gradient(
-                #4f8cff {{ ats_score * 3.6 }}deg,
-                #122b57 0deg
-            );
-        ">
+                {% if ats_score >= 90 %}
+                    🥇 Gold Candidate
+                {% elif ats_score >= 75 %}
+                    🥈 Silver Candidate
+                {% elif ats_score >= 60 %}
+                    🥉 Bronze Candidate
+                {% else %}
+                    📚 Beginner Candidate
+                {% endif %}
 
-            <span>{{ ats_score }}%</span>
+            </span>
 
         </div>
 
     </div>
 
+    <div class="hero-right">
+
+        <a href="/download-report"
+           class="hero-btn">
+
+           📄 Download Report
+
+        </a>
+
+        <a href="/certificate"
+           class="hero-btn">
+
+           🏆 Certificate
+
+        </a>
+
+    </div>
+
+</div>
+
+<div class="score-card">
+
+    <h1>📊 AI Resume Analysis Report</h1>
+
+    <div class="job-role-box">
+
+    <h2>🎯 Target Position</h2>
+
+    <div class="status-badge">
+
+        {{ job_role }}
+
+    </div>
+
+</div>
+
+    <div class="score-card">
+
+    <h2>ATS Score</h2>
+
+   <div class="progress-circle">
+
+    <div
+        class="circle"
+        style="
+        background:
+        conic-gradient(
+        #3b82f6 {{ ats_score }}%,
+        #1e293b 0%
+        );
+        ">
+
+        <span>{{ ats_score }}%</span>
+
+    </div>
+
+</div>
+
     <div class="status-badge">
 
         {% if ats_score >= 80 %}
-            🚀 Excellent ATS Match
+             Excellent ATS Match
         {% elif ats_score >= 60 %}
-            👍 Good ATS Match
+             Good ATS Match
         {% elif ats_score >= 40 %}
-            ⚠️ Average ATS Match
+            Average ATS Match
         {% else %}
-            ❌ Needs Improvement
+             Needs Improvement
         {% endif %}
 
     </div>
@@ -228,59 +290,106 @@
     </div>
     <div class="skills-box">
 
-    <h2>🏆 Recommended Job Roles</h2>
+    <div class="job-section">
 
-    <ul>
+    <div class="job-content">
 
-        {% for role in recommended_roles %}
+        <h2>🏆 Recommended Job Roles</h2>
 
-        <li>🚀 {{ role }}</li>
+        <ul>
 
-        {% endfor %}
+            {% for role in recommended_roles %}
 
-    </ul>
+            <li>🚀 {{ role }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="job-image">
+
+        <img
+        src="{{ url_for('static',
+        filename='images/undraw_job-offers_55y0.svg') }}"
+        alt="Job Recommendations">
+
+    </div>
 
 </div>
-<div class="skills-box">
+<div class="course-section">
 
-    <h2>📚 Recommended Courses</h2>
+    <div class="course-content">
 
-    <ul>
+        <h2>📚 Recommended Courses</h2>
 
-        {% for course in recommended_courses %}
+        <ul>
+
+            {% for course in recommended_courses %}
 
             <li>📖 {{ course }}</li>
 
-        {% endfor %}
+            {% endfor %}
 
-    </ul>
+        </ul>
+
+    </div>
+
+    <div class="course-image">
+
+        <img
+        src="{{ url_for('static',
+        filename='images/undraw_resume_jrgi.svg') }}"
+        alt="Courses">
+
+    </div>
 
 </div>
-<div class="roadmap-container">
+<div class="roadmap-section">
 
-    {% for item in career_roadmap %}
+    <div class="roadmap-content">
 
-    <div class="roadmap-step">
+        <div class="roadmap-container">
 
-        <div class="step-number">
+            {% for item in career_roadmap %}
 
-            Step {{ item.step }}
+            <div class="roadmap-step">
 
-        </div>
+                <div class="step-number">
 
-        <div class="step-content">
+                    Step {{ item.step }}
 
-            <h4>{{ item.description }}</h4>
+                </div>
 
-            <span class="time-badge">
-                ⏳ {{ item.timeframe }}
-            </span>
+                <div class="step-content">
+
+                    <h4>{{ item.description }}</h4>
+
+                    <span class="time-badge">
+
+                        ⏳ {{ item.timeframe }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
 
         </div>
 
     </div>
 
-    {% endfor %}
+    <div class="roadmap-image">
+
+        <img
+        src="{{ url_for('static',
+        filename='images/undraw_thought-process_ze2r.svg') }}"
+        alt="Career Roadmap">
+
+    </div>
 
 </div>
 <div class="skills-box">
@@ -299,19 +408,32 @@
 
 </div>
 
-<div class="skills-box">
+<div class="interview-section">
 
-    <h2>🎤 AI Interview Questions</h2>
+    <div class="interview-content">
 
-    {% for question in interview_questions %}
+        <h2>🎤 AI Interview Questions</h2>
 
-    <div class="question-card">
+        {% for question in interview_questions %}
 
-        {{ loop.index }}. {{ question }}
+        <div class="question-card">
+
+            {{ loop.index }}. {{ question }}
+
+        </div>
+
+        {% endfor %}
 
     </div>
 
-    {% endfor %}
+    <div class="interview-image">
+
+        <img
+        src="{{ url_for('static',
+        filename='images/undraw_interview_yz52.svg') }}"
+        alt="Interview Preparation">
+
+    </div>
 
 </div>
 
@@ -332,18 +454,18 @@
 <div class="button-container">
 
     <a href="/certificate" class="btn">
-        🏆 Download Certificate
-    </a>
+    🏆 Download Certificate
+</a>
 
-    <a href="/download-report" class="btn">
-        Download Report
-    </a>
+<a href="/download-report" class="btn">
+    📄 Download PDF Report
+</a>
 
-    <a href="/dashboard" class="btn">
-        Analyze Another Resume
-    </a>
-    <a href="/dashboard" class="btn">
-    ← Back to Dashboard
+<a href="/dashboard" class="btn">
+    🔄 Analyze Another Resume
+</a>
+<a href="/email-report" class="btn">
+    📧 Email Report
 </a>
 <button id="themeToggle" class="theme-btn">
     🌙 Toggle Theme
