@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left-panel">
+
+        <h1>Welcome Back</h1>
+
+        <p>
+            Login and continue improving your
+            resume with AI-powered analysis.
+        </p>
+
+        <a href="/register" class="register-link">
+            Create New Account
+        </a>
+
+    </div>
+
+    <div class="right-panel">
+
+        <div class="form-box">
+
+            <h2>Login</h2>
+            {% if error %}
+<div class="error-message">
+    {{ error }}
+</div>
+{% endif %}
+
+            <form method="POST">
+
+    <input type="email"
+           name="email"
+           placeholder="Email">
+
+    <input type="password"
+           name="password"
+           placeholder="Password">
+
+    <button type="submit">
+        Login
+    </button>
+
+</form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

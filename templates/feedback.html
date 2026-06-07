@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Feedback</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/feedback.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="feedback-box">
+
+        <h1>Send Feedback</h1>
+
+        <form method="POST">
+
+            <textarea
+                name="message"
+                rows="8"
+                placeholder="Share your feedback..."
+                required>
+            </textarea>
+
+            <button type="submit">
+
+                Submit Feedback
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

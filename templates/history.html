@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Analysis History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/history.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📈 Resume Analysis History</h1>
+    <div class="analytics-container">
+
+    <div class="analytics-card">
+
+        <h2>{{ records|length }}</h2>
+
+        <p>Total Analyses</p>
+
+    </div>
+
+</div>
+<div class="chart-container">
+
+    <h2>📈 ATS Score Trend</h2>
+
+    <canvas id="atsChart"></canvas>
+
+</div>
+
+    <table>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Job Role</th>
+
+            <th>ATS Score</th>
+            <th>Date</th>
+
+            <th>Status</th>
+
+        </tr>
+
+        {% for record in records %}
+
+        <tr>
+
+            <td>{{ record.id }}</td>
+
+            <td>{{ record.job_role }}</td>
+
+            <td>{{ record.ats_score }}%</td>
+
+<td>
+    {{ record.created_at.strftime('%d-%m-%Y') }}
+</td>
+            <td>
+
+                {% if record.ats_score >= 80 %}
+
+                    <span class="excellent">
+                        Excellent
+                    </span>
+
+                {% elif record.ats_score >= 60 %}
+
+                    <span class="good">
+                        Good
+                    </span>
+
+                {% else %}
+
+                    <span class="poor">
+                        Needs Improvement
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <a href="/dashboard" class="btn">
+
+        ← Back to Dashboard
+
+    </a>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const scores = {{ scores|tojson }};
+
+const labels = [];
+
+for(let i = 0; i < scores.length; i++){
+
+    labels.push(
+        "Analysis " + (i + 1)
+    );
+}
+
+const ctx = document.getElementById(
+    'atsChart'
+);
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            label: 'ATS Score',
+
+            data: scores,
+
+            borderColor: '#4da3ff',
+
+            borderWidth: 3,
+
+            tension: 0.4
+
+        }]
+    }
+});
+
+</script>
+</body>
+</html>

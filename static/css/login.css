@@ -1,0 +1,105 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#020b2d,#042d70);
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:1200px;
+    height:700px;
+
+    display:flex;
+
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.left-panel{
+    width:50%;
+    background:#02112f;
+
+    color:white;
+
+    padding:80px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.left-panel h1{
+    font-size:60px;
+    margin-bottom:20px;
+}
+
+.left-panel p{
+    font-size:22px;
+    line-height:1.8;
+}
+
+.register-link{
+    margin-top:30px;
+    color:#4da3ff;
+    text-decoration:none;
+}
+
+.right-panel{
+    width:50%;
+    background:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.form-box{
+    width:80%;
+}
+
+.form-box h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#032d73;
+}
+
+.form-box input{
+    width:100%;
+    padding:15px;
+    margin-bottom:20px;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+.form-box button{
+    width:100%;
+    padding:15px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#0f62fe;
+    color:white;
+
+    font-size:18px;
+}
+.error-message{
+    background:#ffe5e5;
+    color:#d63031;
+    border:1px solid #ff7675;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:20px;
+    text-align:center;
+    font-weight:bold;
+}

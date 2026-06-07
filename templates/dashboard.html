@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+   <div class="sidebar">
+
+    <div class="logo">
+
+        🤖 AI Resume
+
+    </div>
+
+    <ul>
+
+        <li class="active">
+            📊 Dashboard
+        </li>
+
+        <li>
+            📄 Resume Analysis
+        </li>
+
+        <li>
+            <a href="/history">
+                📈 History
+            </a>
+        </li>
+
+        <li>
+    <a href="/profile">
+        👤 Profile
+    </a>
+</li>
+
+        <li>
+            <a href="/logout">
+                🚪 Logout
+            </a>
+        </li>
+        <li>
+    <a href="/feedback">
+        💬 Feedback
+    </a>
+</li>
+
+    </ul>
+
+</div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="welcome-section">
+
+    <h1>Resume Intelligence Dashboard</h1>
+
+    <p>
+        Welcome back, {{ username }}.
+        Upload your resume to evaluate ATS compatibility,
+        identify missing skills, and receive personalized
+        career recommendations.
+    </p>
+
+</div>
+<div class="profile-card">
+
+    <div class="profile-avatar">
+        {{ username[0] }}
+    </div>
+
+    <div class="profile-info">
+
+        <h3>{{ username }}</h3>
+
+        <p>AI Resume Analyzer User</p>
+
+    </div>
+
+</div>
+<div class="stats-container">
+
+    <div class="stat-card">
+        <h3>ATS Average</h3>
+        <span>{{ average_score }}%</span>
+    </div>
+
+    <div class="stat-card">
+        <h3>Analyses</h3>
+        <span>{{ total_analyses }}</span>
+    </div>
+
+    <div class="stat-card">
+        <h3>Highest Score</h3>
+        <span>{{ highest_score }}%</span>
+    </div>
+
+</div>
+<div class="insight-card">
+
+    <h2>📈 Career Insight</h2>
+
+    <p>
+
+        You have completed
+        <strong>{{ total_analyses }}</strong>
+        resume analyses.
+
+        Your highest ATS score is
+        <strong>{{ highest_score }}%</strong>.
+
+        Keep improving your resume
+        to reach a 90%+ ATS score.
+
+    </p>
+
+</div>
+        <form action="/analyze"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <!-- Job Role -->
+            <div class="card">
+
+                <h3>Enter Target Job Role</h3>
+
+                <input
+                    type="text"
+                    name="job_role"
+                    placeholder="Example: Python Developer"
+                    required>
+
+            </div>
+
+            <!-- Resume Upload -->
+    <div class="card">
+
+    <h3>Upload Resume</h3>
+
+    <label class="upload-area">
+
+        <input
+            type="file"
+            name="resume"
+            id="resume"
+            accept=".pdf"
+            required
+            onchange="showFileName()">
+
+        <div class="upload-content">
+
+            <h2>📄</h2>
+
+            <h4 id="upload-text">
+                Drag & Drop Resume Here
+            </h4>
+
+            <p id="file-name">
+                or click to browse files
+            </p>
+
+        </div>
+
+    </label>
+
+</div>
+            <!-- Submit Button -->
+           <button
+    type="submit"
+    class="analyze-btn">
+
+    🚀 Analyze Resume
+
+</button>
+<button id="themeToggle" class="theme-btn">
+    🌙 Toggle Theme
+</button>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+function showFileName() {
+
+    let fileInput =
+        document.getElementById("resume");
+
+    let fileName =
+        document.getElementById("file-name");
+
+    if(fileInput.files.length > 0){
+
+        fileName.innerHTML =
+            "✅ " + fileInput.files[0].name +
+            " uploaded successfully";
+
+        fileName.style.color = "green";
+        fileName.style.fontWeight = "bold";
+    }
+}
+
+</script>
+<script>
+
+const toggleBtn =
+document.getElementById(
+    "themeToggle"
+);
+
+toggleBtn.addEventListener(
+    "click",
+    () => {
+
+        document.body.classList.toggle(
+            "light-theme"
+        );
+
+        localStorage.setItem(
+            "theme",
+            document.body.classList.contains(
+                "light-theme"
+            )
+        );
+    }
+);
+
+if(
+    localStorage.getItem(
+        "theme"
+    ) === "true"
+){
+    document.body.classList.add(
+        "light-theme"
+    );
+}
+
+</script>
+</body>
+</html>

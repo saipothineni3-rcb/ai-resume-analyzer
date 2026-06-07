@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Analysis Result</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/result.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Resume Analysis Result</h1>
+
+    <div class="job-role-box">
+
+        <h2>
+            🎯 Target Job Role:
+            {{ job_role }}
+        </h2>
+
+    </div>
+
+    <div class="score-card">
+
+    <h2>ATS Score</h2>
+
+    <div class="progress-circle">
+
+        <div
+            class="circle"
+            style="
+            background:
+            conic-gradient(
+                #4f8cff {{ ats_score * 3.6 }}deg,
+                #122b57 0deg
+            );
+        ">
+
+            <span>{{ ats_score }}%</span>
+
+        </div>
+
+    </div>
+
+    <div class="status-badge">
+
+        {% if ats_score >= 80 %}
+            🚀 Excellent ATS Match
+        {% elif ats_score >= 60 %}
+            👍 Good ATS Match
+        {% elif ats_score >= 40 %}
+            ⚠️ Average ATS Match
+        {% else %}
+            ❌ Needs Improvement
+        {% endif %}
+
+    </div>
+
+</div>
+
+    <!-- Analytics Cards -->
+
+    <div class="analytics-container">
+
+        <div class="analytics-card">
+
+            <h3>{{ ats_score }}%</h3>
+
+            <p>ATS Score</p>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <h3>{{skills_found  }}</h3>
+
+            <p>Skills Found</p>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <h3>{{ missing_count }}</h3>
+
+            <p>Missing Skills</p>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <h3>{{ suggestions|length }}</h3>
+
+            <p>Suggestions</p>
+
+        </div>
+
+    </div>
+
+    <div class="skills-box">
+
+        <h2>📋 Resume Summary</h2>
+
+        <p>
+            Your resume was analyzed against the
+            requirements of a
+            <strong>{{ job_role }}</strong> role.
+
+            The current ATS score is
+            <strong>{{ ats_score }}%</strong>.
+
+            Review the missing skills and
+            suggestions below to improve your
+            chances of getting shortlisted.
+        </p>
+
+    </div>
+
+    <div class="skills-container">
+
+        <div class="skills-box">
+
+            <h2>✅ Matched Skills</h2>
+
+            {% for skill in matched_skills %}
+
+            <div class="skill-progress">
+
+                <div class="skill-name">
+
+                    {{ skill }}
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"></div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="skills-box">
+
+            <h2>❌ Missing Skills</h2>
+
+            {% for skill in missing_skills %}
+
+            <div class="missing-skill">
+
+                ❌ {{ skill }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="skills-box">
+
+        <h2>💪 Strengths</h2>
+
+        <ul>
+
+            {% for item in strengths %}
+
+            <li>✅ {{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="skills-box">
+
+        <h2>⚠️ Weaknesses</h2>
+
+        <ul>
+
+            {% for item in weaknesses %}
+
+            <li>❌ {{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="skills-box">
+
+        <h2>💡 Improvement Suggestions</h2>
+
+        <ul>
+
+            {% for suggestion in suggestions %}
+
+            <li>💡 {{ suggestion }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="skills-box">
+
+        <h2>🎯 Interview Preparation Tips</h2>
+
+        <ul>
+
+            {% for tip in interview_tips %}
+
+            <li>🎯 {{ tip }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+    <div class="skills-box">
+
+    <h2>🏆 Recommended Job Roles</h2>
+
+    <ul>
+
+        {% for role in recommended_roles %}
+
+        <li>🚀 {{ role }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+<div class="skills-box">
+
+    <h2>📚 Recommended Courses</h2>
+
+    <ul>
+
+        {% for course in recommended_courses %}
+
+            <li>📖 {{ course }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+<div class="roadmap-container">
+
+    {% for item in career_roadmap %}
+
+    <div class="roadmap-step">
+
+        <div class="step-number">
+
+            Step {{ item.step }}
+
+        </div>
+
+        <div class="step-content">
+
+            <h4>{{ item.description }}</h4>
+
+            <span class="time-badge">
+                ⏳ {{ item.timeframe }}
+            </span>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+<div class="skills-box">
+
+    <h2>🏅 Recommended Certifications</h2>
+
+    <ul>
+
+        {% for cert in recommended_certifications %}
+
+            <li>🏅 {{ cert }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+<div class="skills-box">
+
+    <h2>🎤 AI Interview Questions</h2>
+
+    {% for question in interview_questions %}
+
+    <div class="question-card">
+
+        {{ loop.index }}. {{ question }}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+    <div class="skills-box">
+
+    <h2>🤖 AI Resume Review</h2>
+
+    <div class="ai-feedback">
+
+        <p>
+            {{ review }}
+        </p>
+
+    </div>
+
+</div>
+
+<div class="button-container">
+
+    <a href="/certificate" class="btn">
+        🏆 Download Certificate
+    </a>
+
+    <a href="/download-report" class="btn">
+        Download Report
+    </a>
+
+    <a href="/dashboard" class="btn">
+        Analyze Another Resume
+    </a>
+    <a href="/dashboard" class="btn">
+    ← Back to Dashboard
+</a>
+<button id="themeToggle" class="theme-btn">
+    🌙 Toggle Theme
+</button>
+
+</div>
+
+    </div>
+
+</div>
+<script>
+
+const toggleBtn =
+document.getElementById(
+    "themeToggle"
+);
+
+toggleBtn.addEventListener(
+    "click",
+    () => {
+
+        document.body.classList.toggle(
+            "light-theme"
+        );
+
+        localStorage.setItem(
+            "theme",
+            document.body.classList.contains(
+                "light-theme"
+            )
+        );
+    }
+);
+
+if(
+    localStorage.getItem(
+        "theme"
+    ) === "true"
+){
+    document.body.classList.add(
+        "light-theme"
+    );
+}
+
+</script>
+</body>
+</html>
