@@ -60,3 +60,27 @@ th,td{
     padding:15px;
     border:1px solid #1e3a8a;
 }
+/* =====================
+   MOBILE RESPONSIVE
+===================== */
+
+@media screen and (max-width:768px){
+
+    .container{
+        width:95%;
+        padding:15px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    h2{
+        font-size:22px;
+    }
+
+    p{
+        font-size:15px;
+    }
+
+}

@@ -762,3 +762,80 @@ h1{
 
     max-width:100%;
 }
+/* =====================
+   MOBILE RESPONSIVE
+===================== */
+
+@media screen and (max-width:768px){
+
+    .container{
+        width:95%;
+        padding:15px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    h2{
+        font-size:22px;
+    }
+
+    p{
+        font-size:15px;
+    }
+
+}
+@media screen and (max-width:768px){
+
+    .skills-container,
+    .job-section,
+    .course-section,
+    .interview-section,
+    .roadmap-section,
+    .review-section{
+
+        flex-direction:column;
+    }
+
+    .analytics-container{
+
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .analytics-card{
+        width:100%;
+    }
+
+    .circle{
+        width:170px;
+        height:170px;
+    }
+
+    .circle::before{
+        width:125px;
+        height:125px;
+    }
+
+    .circle span{
+        font-size:38px;
+    }
+
+    .job-image img,
+    .course-image img,
+    .interview-image img,
+    .review-image img,
+    .roadmap-image img{
+
+        width:220px;
+    }
+}
+img{
+    max-width:100%;
+    height:auto;
+}
+.btn{
+    width:100%;
+    max-width:300px;
+}
