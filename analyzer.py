@@ -5,9 +5,8 @@ import os
 
 load_dotenv()
 
-client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
-)
+api_key = os.getenv("GROQ_API_KEY")
+client = Groq(api_key=api_key) if api_key else None
 from PyPDF2 import PdfReader
 
 
@@ -304,6 +303,9 @@ def get_ai_feedback(job_role, resume_text):
     """
 
     try:
+
+        if not client:
+            raise Exception("GROQ_API_KEY is not set")
 
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
