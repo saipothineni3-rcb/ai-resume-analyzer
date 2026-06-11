@@ -62,22 +62,30 @@ body{
 ===================== */
 
 @media screen and (max-width:768px){
+    html,
+    body{
+        overflow-x:hidden;
+    }
+
+    body{
+        height:auto;
+        padding:20px 15px;
+        display:block;
+    }
 
     .container{
-        width:95%;
-        padding:15px;
+        width:100%;
+        height:auto;
+        padding:0;
     }
 
-    h1{
+    .form-box{
+        width:100%;
+        max-width:440px;
+        padding:24px 20px;
+    }
+
+    .form-box h1{
         font-size:28px;
     }
-
-    h2{
-        font-size:22px;
-    }
-
-    p{
-        font-size:15px;
-    }
-
 }

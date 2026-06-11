@@ -50,11 +50,11 @@ def register():
 
         if existing_user:
 
-            return """
-            <h2>Email already registered!</h2>
-            <p>Please login using your existing account.</p>
-            <a href='/login'>Login Here</a>
-            """
+            return render_template(
+                'register.html',
+                error='This email is already registered. Please log in instead.',
+                show_login_button=True
+            )
 
         password = generate_password_hash(
             request.form['password']
@@ -75,7 +75,9 @@ def register():
         )
 
     return render_template(
-        'register.html'
+        'register.html',
+        error=None,
+        show_login_button=False
     )
 
 # Login Page

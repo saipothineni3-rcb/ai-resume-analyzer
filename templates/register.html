@@ -46,6 +46,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
             <h2>Sign Up</h2>
 
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            {% if show_login_button %}
+            <div class="login-action">
+                <a href="{{ url_for('login') }}" class="form-login-btn">Login Now</a>
+            </div>
+            {% endif %}
+
             <form method="POST">
 
     <input
