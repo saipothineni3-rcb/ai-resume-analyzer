@@ -253,14 +253,16 @@ import json
 def get_ai_feedback(job_role, resume_text):
 
     prompt = f"""
-    You are an expert ATS Resume Analyzer and Technical Recruiter.
+    You are an expert ATS strategist, hiring manager, and career coach.
+    Analyze the resume strictly from the information provided and compare it to the target job role.
 
-    Analyze the following resume for the role:
-
+    Target Job Role:
     {job_role}
 
-    Return ONLY valid JSON.
+    Resume Content:
+    {resume_text}
 
+    Return ONLY valid JSON using this exact schema:
     {{
         "ats_score": 0,
         "skills_found": 0,
@@ -274,32 +276,41 @@ def get_ai_feedback(job_role, resume_text):
         "interview_tips": [],
         "recommended_roles": [],
         "recommended_courses": [],
-        "career_roadmap": [],
+        "career_roadmap": [
+            {{"step": 1, "description": "", "timeframe": ""}},
+            {{"step": 2, "description": "", "timeframe": ""}},
+            {{"step": 3, "description": "", "timeframe": ""}},
+            {{"step": 4, "description": "", "timeframe": ""}},
+            {{"step": 5, "description": "", "timeframe": ""}}
+        ],
         "recommended_certifications": [],
         "career_path": [],
-        "interview_questions": []
+        "interview_questions": [],
+        "role_analysis": {{
+            "role_summary": "",
+            "key_requirements": [],
+            "alignment_summary": "",
+            "job_match_reason": "",
+            "recommended_focus_areas": []
+        }}
     }}
 
     Instructions:
-
-    1. ATS Score should be between 0 and 100.
-    2. Give a professional review paragraph.
-    3. List skills found in the resume.
-    4. List missing skills for the target role.
-    5. Mention strengths.
-    6. Mention weaknesses.
-    7. Give improvement suggestions.
-    8. Give interview preparation tips.
-    9. Recommend suitable job roles.
-    10. Recommend courses to improve missing skills.
-    11. Create a career roadmap with 5 steps to improve the candidate profile.
-    12. Recommend professional certifications relevant to the target role.
-    13. Predict a realistic career path for the candidate over the next 5 years.
-    14. Generate 10 interview questions based on the candidate's resume and target role.
-
-    Resume Content:
-
-    {resume_text}
+    1. Set `ats_score` as an integer between 0 and 100.
+    2. Set `skills_found` and `missing_count` to match the lengths of the corresponding arrays.
+    3. Write a professional review paragraph that explains how the resume fits the target role.
+    4. Clearly identify the most relevant skills present in the resume and the key skills missing for the role.
+    5. Explain strengths and weaknesses using evidence from the resume.
+    6. Give practical improvement suggestions.
+    7. Give interview tips that match the candidate profile and role.
+    8. Recommend suitable job roles that are realistic based on the resume.
+    9. Recommend courses and certifications that help close the gaps.
+    10. Create exactly 5 career roadmap steps with realistic timeframes.
+    11. Predict a realistic 5-year career path.
+    12. Generate 8 to 10 interview questions.
+    13. In `role_analysis`, summarize what the role typically requires and explain how well the resume aligns.
+    14. Do not invent experience; base your analysis only on the provided resume.
+    15. Ensure the output is valid JSON and nothing else.
     """
 
     try:
@@ -316,7 +327,7 @@ def get_ai_feedback(job_role, resume_text):
                 }
             ],
             temperature=0.2,
-            max_tokens=2000
+            max_tokens=2400
         )
 
         result = response.choices[0].message.content
@@ -335,6 +346,16 @@ def get_ai_feedback(job_role, resume_text):
         ).strip()
 
         ai_data = json.loads(result)
+
+        # Ensure role analysis exists even if model skips it
+        if "role_analysis" not in ai_data or not isinstance(ai_data["role_analysis"], dict):
+            ai_data["role_analysis"] = {
+                "role_summary": "Role analysis unavailable.",
+                "key_requirements": [],
+                "alignment_summary": "",
+                "job_match_reason": "",
+                "recommended_focus_areas": []
+            }
 
         return ai_data
 
@@ -355,5 +376,17 @@ def get_ai_feedback(job_role, resume_text):
             "weaknesses": [],
             "suggestions": [],
             "interview_tips": [],
-            "recommended_roles": []
+            "recommended_roles": [],
+            "recommended_courses": [],
+            "career_roadmap": [],
+            "recommended_certifications": [],
+            "career_path": [],
+            "interview_questions": [],
+            "role_analysis": {
+                "role_summary": "Unable to analyze the job role right now.",
+                "key_requirements": [],
+                "alignment_summary": "",
+                "job_match_reason": "",
+                "recommended_focus_areas": []
+            }
         }

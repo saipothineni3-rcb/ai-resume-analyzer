@@ -126,6 +126,46 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <!-- Analytics Cards -->
 
+    <div class="skills-box">
+
+        <h2>🧠 AI Job Role Analysis</h2>
+
+        <p><strong>Role:</strong> {{ job_role }}</p>
+
+        {% if role_summary %}
+            <p>{{ role_summary }}</p>
+        {% endif %}
+
+        {% if key_requirements %}
+            <h3>Key Requirements</h3>
+            <ul>
+                {% for requirement in key_requirements %}
+                    <li>📌 {{ requirement }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if alignment_summary %}
+            <h3>Alignment Summary</h3>
+            <p>{{ alignment_summary }}</p>
+        {% endif %}
+
+        {% if job_match_reason %}
+            <h3>Why This Match</h3>
+            <p>{{ job_match_reason }}</p>
+        {% endif %}
+
+        {% if recommended_focus_areas %}
+            <h3>Recommended Focus Areas</h3>
+            <ul>
+                {% for area in recommended_focus_areas %}
+                    <li>🎯 {{ area }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    </div>
+
     <div class="analytics-container">
 
         <div class="analytics-card">

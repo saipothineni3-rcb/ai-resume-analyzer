@@ -205,24 +205,34 @@ def analyze():
         resume_text
     )
     review = ai_data.get(
-    "review",
-    ""
-)
+        "review",
+        ""
+    )
 
-    ats_score = ai_data.get(
+    ats_score = int(ai_data.get(
         "ats_score",
         0
+    ))
+
+    matched_skills = ai_data.get(
+        "matched_skills",
+        []
     )
 
-    skills_found = ai_data.get(
+    missing_skills = ai_data.get(
+        "missing_skills",
+        []
+    )
+
+    skills_found = int(ai_data.get(
         "skills_found",
-        0
-    )
+        len(matched_skills)
+    ))
 
-    missing_count = ai_data.get(
+    missing_count = int(ai_data.get(
         "missing_count",
-        0
-    )
+        len(missing_skills)
+    ))
 
     strengths = ai_data.get(
         "strengths",
@@ -249,32 +259,48 @@ def analyze():
         []
     )
     recommended_courses = ai_data.get(
-    "recommended_courses",
-    []
-)   
+        "recommended_courses",
+        []
+    )
     career_roadmap = ai_data.get(
-    "career_roadmap",
-    []
-)
+        "career_roadmap",
+        []
+    )
     recommended_certifications = ai_data.get(
-    "recommended_certifications",
-    []
-)
+        "recommended_certifications",
+        []
+    )
     career_path = ai_data.get(
-    "career_path",
-    []
-)
+        "career_path",
+        []
+    )
     interview_questions = ai_data.get(
-    "interview_questions",
-    []
-)
-    missing_skills = ai_data.get(
-        "missing_skills",
+        "interview_questions",
         []
     )
 
-    matched_skills = ai_data.get(
-        "matched_skills",
+    role_analysis = ai_data.get(
+        "role_analysis",
+        {}
+    )
+    role_summary = role_analysis.get(
+        "role_summary",
+        ""
+    )
+    key_requirements = role_analysis.get(
+        "key_requirements",
+        []
+    )
+    alignment_summary = role_analysis.get(
+        "alignment_summary",
+        ""
+    )
+    job_match_reason = role_analysis.get(
+        "job_match_reason",
+        ""
+    )
+    recommended_focus_areas = role_analysis.get(
+        "recommended_focus_areas",
         []
     )
 
@@ -314,7 +340,12 @@ def analyze():
         interview_questions=interview_questions,
         career_path=career_path,
         recommended_certifications=recommended_certifications,
-        ai_feedback=ai_data
+        ai_feedback=ai_data,
+        role_summary=role_summary,
+        key_requirements=key_requirements,
+        alignment_summary=alignment_summary,
+        job_match_reason=job_match_reason,
+        recommended_focus_areas=recommended_focus_areas
     )
 @app.route('/history')
 def history():

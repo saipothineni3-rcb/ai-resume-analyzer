@@ -77,18 +77,37 @@
         <div class="top-navbar">
 
             <div class="search-box">
-                <input type="text" placeholder="Search...">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search dashboard..."
+                    aria-label="Search dashboard">
             </div>
 
             <div class="nav-right">
 
-                <button class="icon-btn">
+                <button class="icon-btn" type="button" aria-label="Notifications">
                     <i class="fa-solid fa-bell"></i>
                 </button>
 
-                <button class="icon-btn">
-                    <i class="fa-solid fa-gear"></i>
-                </button>
+                <div class="settings-wrapper">
+                    <button
+                        class="icon-btn"
+                        id="settingsToggle"
+                        type="button"
+                        aria-label="Open settings menu">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+
+                    <div class="settings-menu" id="settingsMenu">
+                        <a href="/profile">Profile</a>
+                        <a href="/feedback">Feedback</a>
+                        <a href="/logout">Logout</a>
+                        <button type="button" id="themeToggleMenu" class="theme-btn small-btn">
+                            🌗 Toggle Theme
+                        </button>
+                    </div>
+                </div>
 
                 <div class="user-profile">
 
@@ -105,7 +124,7 @@
         </div>
 
         <!-- Welcome Banner -->
-        <div class="welcome-section">
+        <div class="welcome-section" data-searchable="true">
 
             <h1>
                 Welcome Back, {{ username }} 👋
@@ -120,7 +139,7 @@
         </div>
 
         <!-- Profile Card -->
-        <div class="profile-card">
+        <div class="profile-card" data-searchable="true">
 
             <div class="profile-avatar">
                 {{ username[0] }}
@@ -137,7 +156,7 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="stats-container">
+        <div class="stats-container" data-searchable="true">
 
             <div class="stat-card">
                 <h3>ATS Average</h3>
@@ -157,7 +176,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="quick-actions">
+        <div class="quick-actions" data-searchable="true">
 
             <a href="/history" class="quick-card">
                 📈 View History
@@ -174,7 +193,7 @@
         </div>
 
         <!-- Career Insight -->
-        <div class="insight-card">
+        <div class="insight-card" data-searchable="true">
 
             <h2>📈 Career Insight</h2>
 
@@ -254,15 +273,6 @@
 
             </button>
 
-            <button
-                type="button"
-                id="themeToggle"
-                class="theme-btn">
-
-                🌙 Toggle Theme
-
-            </button>
-
         </form>
 
     </div>
@@ -294,33 +304,67 @@ function showFileName() {
 
 <script>
 
+const searchInput =
+document.getElementById("searchInput");
+
+if (searchInput) {
+    searchInput.addEventListener("input", () => {
+        const term = searchInput.value.trim().toLowerCase();
+        const searchableItems = document.querySelectorAll("[data-searchable='true']");
+
+        searchableItems.forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(term) ? "" : "none";
+        });
+    });
+}
+
+const settingsToggle =
+document.getElementById("settingsToggle");
+const settingsMenu =
+document.getElementById("settingsMenu");
+
+if (settingsToggle && settingsMenu) {
+    settingsToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        settingsMenu.classList.toggle("show");
+    });
+
+    document.addEventListener("click", () => {
+        settingsMenu.classList.remove("show");
+    });
+
+    settingsMenu.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+}
+
 const toggleBtn =
 document.getElementById("themeToggle");
+const toggleBtnMenu =
+document.getElementById("themeToggleMenu");
 
-toggleBtn.addEventListener(
-    "click",
-    () => {
+function applyTheme(isLight) {
+    document.body.classList.toggle("light-theme", isLight);
+    localStorage.setItem("theme", isLight ? "true" : "false");
+}
 
-        document.body.classList.toggle(
-            "light-theme"
-        );
+if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+        applyTheme(!document.body.classList.contains("light-theme"));
+    });
+}
 
-        localStorage.setItem(
-            "theme",
-            document.body.classList.contains(
-                "light-theme"
-            )
-        );
-    }
-);
+if (toggleBtnMenu) {
+    toggleBtnMenu.addEventListener("click", () => {
+        applyTheme(!document.body.classList.contains("light-theme"));
+    });
+}
 
-if(
-    localStorage.getItem("theme")
-    === "true"
-){
-    document.body.classList.add(
-        "light-theme"
-    );
+if (localStorage.getItem("theme") === "true") {
+    applyTheme(true);
+} else if (localStorage.getItem("theme") === "false") {
+    applyTheme(false);
 }
 
 </script>
